@@ -44,11 +44,11 @@ public class ParseFactory {
                     DocParser2.parseBaiDu(document2, 1, resultRank);
                     break;
                 case 4:
-                    Document document3 = JsoupFactory.getSogouCrawler(resultRank.getQueryItem().getKeyword(), 1, true, null);
+                    Document document3 = JsoupFactory.getSogouCrawler(resultRank.getQueryItem().getKeyword(), 1, false, null);
                     DocParser2.parseSouGou(document3, 1, resultRank);
                     break;
                 case 8:
-                    Document document4 = JsoupFactory.getSo360Crawler(resultRank.getQueryItem().getKeyword(), 1, true, null);
+                    Document document4 = JsoupFactory.getSo360Crawler(resultRank.getQueryItem().getKeyword(), 1, false, null);
                     DocParser2.parseSO360(document4, 1, resultRank);
                     break;
             }

@@ -7,7 +7,6 @@ import com.zhaoyouhua.spider.constant.ClientType;
 import com.zhaoyouhua.spider.constant.DemandFeeType;
 import com.zhaoyouhua.spider.constant.SearchEngineType;
 import com.zhaoyouhua.spider.dao.model.OffLineReptilianRecord;
-import com.zhaoyouhua.spider.dao.model.ReptilianRecord;
 import com.zhaoyouhua.spider.jsoup.ParseFactory;
 import com.zhaoyouhua.spider.model.QueryItem;
 import com.zhaoyouhua.spider.model.Reptile;
@@ -36,7 +35,7 @@ public class OffLineCrawlJob extends QuartzJobBean {
         getCrawlData();
     }
 
-    private void getCrawlData() {
+    public void getCrawlData() {
 
         String sr = HttpUtil.sendPost("http://47.97.207.240:8080//getCrawlingOffLineOrder", "");
         JSONObject json = JSONObject.parseObject(sr);
@@ -64,8 +63,8 @@ public class OffLineCrawlJob extends QuartzJobBean {
                 OffLineReptilianRecord offLineReptilianRecord = new OffLineReptilianRecord();
                 offLineReptilianRecord.setEngineType(reptile.getEngineType());
                 offLineReptilianRecord.setFeeType(reptile.getDemandFeeType());
-                offLineReptilianRecord.setPagemark(resultRank.getPageNum());
-                offLineReptilianRecord.setPagination(resultRank.getPosition());
+                offLineReptilianRecord.setPagemark(resultRank.getPosition());
+                offLineReptilianRecord.setPagination(resultRank.getPageNum());
                 offLineReptilianRecord.setKeyword(reptile.getKeywords());
                 offLineReptilianRecord.setUserDemandId(reptile.getUserDemandId());
                 offLineReptilianRecord.setWebsite(reptile.getWebsite());

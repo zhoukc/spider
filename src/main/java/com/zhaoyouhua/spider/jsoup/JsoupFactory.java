@@ -105,7 +105,7 @@ public class JsoupFactory {
 
     private static Document getDoc(String site, String userAgent, boolean isProxy, Map<String, String> headers) {
         int tryTimes = 0;
-        while ((tryTimes++) < 5)
+        while ((tryTimes++) < 5) {
             try {
                 Connection connection = Jsoup.connect(site)
                         .ignoreHttpErrors(true)
@@ -119,10 +119,12 @@ public class JsoupFactory {
                     JSONObject jsonObject = ProxyFactory.randomProxy();
                     System.out.println(jsonObject.toJSONString());
                     connection.proxy(jsonObject.getString("ip"), jsonObject.getIntValue("port"));
+                    isProxy = false;
                 }
                 Document doc = connection.get();
                 System.out.println(doc.baseUri());
                 if (doc.baseUri().startsWith("http://www.sogou.com/antispider/")) {
+                    isProxy = true;
                     throw new IOException("搜狗反爬虫机制");
                 }
                 return doc;
@@ -134,12 +136,8 @@ public class JsoupFactory {
                 continue;
             } catch (IOException e) {
                 log.error("获取文档出错,重试第" + tryTimes + "次", e);
-                try {
-                    Thread.sleep(2000); //休眠两秒
-                } catch (InterruptedException e1) {
-                    e1.printStackTrace();
-                }
             }
+        }
         return null;
     }
 

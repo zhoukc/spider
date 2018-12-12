@@ -63,8 +63,8 @@ public class OnLineCrawlJob extends QuartzJobBean {
                 ReptilianRecord reptilianRecord = new ReptilianRecord();
                 reptilianRecord.setEngineType(reptile.getEngineType());
                 reptilianRecord.setFeeType(reptile.getDemandFeeType());
-                reptilianRecord.setPagemark(resultRank.getPageNum());
-                reptilianRecord.setPagination(resultRank.getPosition());
+                reptilianRecord.setPagemark(resultRank.getPosition());
+                reptilianRecord.setPagination(resultRank.getPageNum());
                 reptilianRecord.setKeyword(reptile.getKeywords());
                 reptilianRecord.setUserDemandId(reptile.getUserDemandId());
                 reptilianRecord.setWebsite(reptile.getWebsite());

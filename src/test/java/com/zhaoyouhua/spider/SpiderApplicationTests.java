@@ -1,5 +1,6 @@
 package com.zhaoyouhua.spider;
 
+import com.zhaoyouhua.spider.jobs.OffLineCrawlJob;
 import com.zhaoyouhua.spider.jobs.OnLineCrawlJob;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,17 +10,17 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
-//@ActiveProfiles("prod")
+@ActiveProfiles("prod")
 @SpringBootTest
 public class SpiderApplicationTests {
 
-    @Autowired
-    private OnLineCrawlJob onLineCrawlJob;
-
-    @Test
-    public void contextLoads() {
-        onLineCrawlJob.getCrawlData();
-
-    }
+//    @Autowired
+//    private OffLineCrawlJob offLineCrawlJob;
+//
+//    @Test
+//    public void contextLoads() {
+//        offLineCrawlJob.getCrawlData();
+//
+//    }
 
 }
