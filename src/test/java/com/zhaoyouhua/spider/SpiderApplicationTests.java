@@ -15,12 +15,14 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class SpiderApplicationTests {
 
 //    @Autowired
-//    private OffLineCrawlJob offLineCrawlJob;
+//    private OnLineCrawlJob onLineCrawlJob;
 //
 //    @Test
 //    public void contextLoads() {
-//        offLineCrawlJob.getCrawlData();
+//        onLineCrawlJob.getCrawlData();
 //
 //    }
+
+
 
 }
