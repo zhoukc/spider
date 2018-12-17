@@ -22,12 +22,12 @@ public class DocParser2 {
         try {
             if (!resultRank.getQueryItem().isMobile()) {
                 Elements containers = doc.getElementsByClass("c-container");//获取每个条目
-                for (int position = 1; position <= containers.size(); position++) {
+                for (int position = 0; position <containers.size(); position++) {
 
                     Element element = containers.get(position);
                     Elements a = element.getElementsByClass("c-showurl");
                     String site = a.get(0).ownText();
-                    if (judgeRank(pageNum, resultRank, position, element, site)) break;
+                    if (judgeRank(pageNum, resultRank, (position+1), element, site)) break;
 
                 }
 
@@ -45,7 +45,7 @@ public class DocParser2 {
             Element results = doc.getElementById("results");
             Elements resultContent = results.getElementsByClass("c-result-content");//获取每个条目
 
-            for (int i = 1; i <= resultContent.size(); i++) {
+            for (int i = 0; i < resultContent.size(); i++) {
 
                 Element element = resultContent.get(i);
                 String site = element.getElementsByClass("c-footer-showurl").get(0).ownText();
@@ -53,8 +53,8 @@ public class DocParser2 {
                 if (UrlUtil.getDomainName(resultRank.getQueryItem().getWebsite()).equalsIgnoreCase(domainName)) {
                     log.info(resultRank.getQueryItem().getKeyword() + ";第" + pageNum + "页,排名第" + i + ";URL:" + domainName);
                     resultRank.setPageNum(pageNum);
-                    resultRank.setPosition(i);
-                    saveSnapshot(element, i, site, resultRank);
+                    resultRank.setPosition((i+1));
+                    saveSnapshot(element, (i+1), site, resultRank);
                     break;
                 }
 
@@ -71,11 +71,11 @@ public class DocParser2 {
         try {
             Elements results = doc.getElementsByClass("results"); //内容主体
             Elements rbs = results.get(0).getElementsByClass("rb");//每个条目
-            for (int i = 1; i <= rbs.size(); i++) {
+            for (int i = 0; i < rbs.size(); i++) {
                 Element element = rbs.get(i);
                 Elements fb = element.getElementsByClass("fb");
                 String site = fb.get(0).child(0).ownText();
-                if (judgeRank(pageNum, resultRank, i, element, site)) break;
+                if (judgeRank(pageNum, resultRank, (i+1), element, site)) break;
 
             }
         } catch (Exception e) {
@@ -103,12 +103,12 @@ public class DocParser2 {
         try {
             Elements result = doc.getElementsByClass("result");
             Elements resList = result.get(0).getElementsByClass("res-list");
-            for (int pos = 1; pos <= resList.size(); pos++) {
+            for (int pos = 0; pos <resList.size(); pos++) {
 
                 Element element = resList.get(pos);
                 Elements li = element.getElementsByClass("res-linkinfo");
                 String site = li.get(0).child(0).ownText();
-                if (judgeRank(pageNum, resultRank, pos, element, site)) break;
+                if (judgeRank(pageNum, resultRank, (pos+1), element, site)) break;
             }
         } catch (Exception e) {
             log.error("没有链接");

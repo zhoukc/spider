@@ -1,7 +1,6 @@
 package com.zhaoyouhua.spider.jsoup;
 
 import com.alibaba.fastjson.JSONObject;
-import com.zhaoyouhua.spider.constant.UserAgentTypes;
 import com.zhaoyouhua.spider.proxy.ProxyFactory;
 import com.zhaoyouhua.spider.util.UrlUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -185,12 +184,12 @@ public class JsoupFactory {
 
     public static void main(String[] args) {
 
-        testSogou();
+        testBadiu();
 
     }
 
     private static void testBadiu() {
-        Document doc = JsoupFactory.getBaiDuCrawler("轴流风机", 1, false, false, null);
+        Document doc = JsoupFactory.getBaiDuCrawler("氟胶O型圈厂家", 1, false, false, null);
 
         Elements result = doc.getElementsByClass("c-container");
         for (int rank = 0; rank < result.size(); rank++) {

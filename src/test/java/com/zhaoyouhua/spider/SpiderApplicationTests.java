@@ -2,6 +2,9 @@ package com.zhaoyouhua.spider;
 
 import com.zhaoyouhua.spider.jobs.OffLineCrawlJob;
 import com.zhaoyouhua.spider.jobs.OnLineCrawlJob;
+import com.zhaoyouhua.spider.jsoup.JsoupFactory;
+import com.zhaoyouhua.spider.parse.DocParser2;
+import org.jsoup.nodes.Document;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,5 +27,11 @@ public class SpiderApplicationTests {
 //    }
 
 
+    @Test
+    public void Test() throws Exception {
+
+//        Document document = JsoupFactory.getBaiDuCrawler("氟胶O型圈厂家", 1, false, false, null);
+//        DocParser2.parseBaiDu(document,);
+    }
 
 }
