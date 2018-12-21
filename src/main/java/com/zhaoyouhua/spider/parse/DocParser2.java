@@ -22,13 +22,15 @@ public class DocParser2 {
         try {
             if (!resultRank.getQueryItem().isMobile()) {
                 Elements containers = doc.getElementsByClass("c-container");//获取每个条目
-                for (int position = 0; position <containers.size(); position++) {
-
-                    Element element = containers.get(position);
-                    Elements a = element.getElementsByClass("c-showurl");
-                    String site = a.get(0).ownText();
-                    if (judgeRank(pageNum, resultRank, (position+1), element, site)) break;
-
+                for (int position = 0; position < containers.size(); position++) {
+                    try {
+                        Element element = containers.get(position);
+                        Elements a = element.getElementsByClass("c-showurl");
+                        String site = a.get(0).ownText();
+                        if (judgeRank(pageNum, resultRank, (position + 1), element, site)) break;
+                    } catch (IndexOutOfBoundsException e) {
+                        log.error("百度PC-没有条目");
+                    }
                 }
 
             } else {
@@ -47,15 +49,19 @@ public class DocParser2 {
 
             for (int i = 0; i < resultContent.size(); i++) {
 
-                Element element = resultContent.get(i);
-                String site = element.getElementsByClass("c-footer-showurl").get(0).ownText();
-                String domainName = UrlUtil.getDomainName(site);
-                if (UrlUtil.getDomainName(resultRank.getQueryItem().getWebsite()).equalsIgnoreCase(domainName)) {
-                    log.info(resultRank.getQueryItem().getKeyword() + ";第" + pageNum + "页,排名第" + i + ";URL:" + domainName);
-                    resultRank.setPageNum(pageNum);
-                    resultRank.setPosition((i+1));
-                    saveSnapshot(element, (i+1), site, resultRank);
-                    break;
+                try {
+                    Element element = resultContent.get(i);
+                    String site = element.getElementsByClass("c-footer-showurl").get(0).ownText();
+                    String domainName = UrlUtil.getDomainName(site);
+                    if (UrlUtil.getDomainName(resultRank.getQueryItem().getWebsite()).equalsIgnoreCase(domainName)) {
+                        log.info(resultRank.getQueryItem().getKeyword() + ";第" + pageNum + "页,排名第" + i + ";URL:" + domainName);
+                        resultRank.setPageNum(pageNum);
+                        resultRank.setPosition((i + 1));
+                        saveSnapshot(element, (i + 1), site, resultRank);
+                        break;
+                    }
+                } catch (IndexOutOfBoundsException e) {
+                    log.error("百度移动-没有条目");
                 }
 
             }
@@ -72,11 +78,14 @@ public class DocParser2 {
             Elements results = doc.getElementsByClass("results"); //内容主体
             Elements rbs = results.get(0).getElementsByClass("rb");//每个条目
             for (int i = 0; i < rbs.size(); i++) {
-                Element element = rbs.get(i);
-                Elements fb = element.getElementsByClass("fb");
-                String site = fb.get(0).child(0).ownText();
-                if (judgeRank(pageNum, resultRank, (i+1), element, site)) break;
-
+                try {
+                    Element element = rbs.get(i);
+                    Elements fb = element.getElementsByClass("fb");
+                    String site = fb.get(0).child(0).ownText();
+                    if (judgeRank(pageNum, resultRank, (i + 1), element, site)) break;
+                } catch (IndexOutOfBoundsException e) {
+                    log.error("搜狗PC-没有条目");
+                }
             }
         } catch (Exception e) {
             log.error("没有链接");
@@ -103,12 +112,15 @@ public class DocParser2 {
         try {
             Elements result = doc.getElementsByClass("result");
             Elements resList = result.get(0).getElementsByClass("res-list");
-            for (int pos = 0; pos <resList.size(); pos++) {
-
-                Element element = resList.get(pos);
-                Elements li = element.getElementsByClass("res-linkinfo");
-                String site = li.get(0).child(0).ownText();
-                if (judgeRank(pageNum, resultRank, (pos+1), element, site)) break;
+            for (int pos = 0; pos < resList.size(); pos++) {
+                try {
+                    Element element = resList.get(pos);
+                    Elements li = element.getElementsByClass("res-linkinfo");
+                    String site = li.get(0).child(0).ownText();
+                    if (judgeRank(pageNum, resultRank, (pos + 1), element, site)) break;
+                } catch (IndexOutOfBoundsException e) {
+                    log.error("360PC-没有条目");
+                }
             }
         } catch (Exception e) {
             log.error("没有链接");
@@ -131,12 +143,12 @@ public class DocParser2 {
         sb.append("----快照信息----" + "\n");
         try {
             sb.append(result.html() + "\n");
-            File directory = new File("crawlerLog"+File.separator+getCurrentDate());
+            File directory = new File("crawlerLog" + File.separator + getCurrentDate());
             if (!directory.exists()) {
                 directory.mkdirs();
             }
             String absolutePath = directory.getAbsolutePath();
-            File file = new File(absolutePath+File.separator+"snap_" + resultRank.getQueryItem().getSearchEngine() + "_" + resultRank.getQueryItem().getKeyword().trim() + "_" + getCurrentTime() + ".log.txt");
+            File file = new File(absolutePath + File.separator + "snap_" + resultRank.getQueryItem().getSearchEngine() + "_" + resultRank.getQueryItem().getKeyword().trim() + "_" + getCurrentTime() + ".log.txt");
             FileUtils.writeStringToFile(file, sb.toString());
             log.info("[OK]本次排名查询成功搜索引擎=" + resultRank.getQueryItem().getSearchEngine() + ",页面快照已经保存在" + file.getAbsolutePath() + "文件中");
         } catch (Exception e) {
