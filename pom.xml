@@ -120,6 +120,8 @@
     </dependencies>
 
     <build>
+        <!--为jar包取名字-->
+        <finalName>spider</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

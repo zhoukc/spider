@@ -91,7 +91,7 @@ public class JsoupFactory {
 
     public static Document getSo360Crawler(String keyword, int pageNum, boolean isProxy, Map<String, String> headers) {
         String site = createSo360Url(keyword, pageNum);
-        String userAgent = uaPc[random.nextInt(uaPc.length)];
+        String userAgent = uaPc[0];//random.nextInt(uaPc.length)
         log.info("UserAgent:" + userAgent);
         if (headers == null) {
             headers = new HashMap<>();
