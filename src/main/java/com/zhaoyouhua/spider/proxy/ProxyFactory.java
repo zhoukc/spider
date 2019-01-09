@@ -79,7 +79,7 @@ public class ProxyFactory {
         return false;
     }
 
-    public static JSONObject randomProxy() {
+    public static synchronized JSONObject randomProxy() {
         JSONObject jsonObject = null;
         while (true) {
             int seed = random.nextInt(proxies.size());
