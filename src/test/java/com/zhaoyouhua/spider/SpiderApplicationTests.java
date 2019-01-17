@@ -39,8 +39,8 @@ public class SpiderApplicationTests {
 
     @Test
     public void BaiDUTest() throws Exception {
-
-        Document doc = JsoupFactory.getBaiDuCrawler("压力匹配器", 1, false, false, null);
+         //西安蟑螂药
+        Document doc = JsoupFactory.getBaiDuCrawler("家庭有蟑螂怎么办", 1, false, false, null);
 
         try {
             Element results = doc.getElementById("content_left");
@@ -49,6 +49,7 @@ public class SpiderApplicationTests {
             for (int i = 0; i < resultContent.size(); i++) {
                 try {
                     Element element = resultContent.get(i);
+                  //  Elements f13 = element.getElementsByClass("f13");
                     String site = element.getElementsByClass("c-showurl").get(0).ownText();
                     String domainName = UrlUtil.getDomainName(site);
                     System.out.println(domainName);
@@ -113,7 +114,7 @@ public class SpiderApplicationTests {
 
     @Test
     public void So360Test() throws Exception {
-        Document doc = JsoupFactory.getSo360Crawler("重量复检称", 1, false, null);
+        Document doc = JsoupFactory.getSo360Crawler("重量复检秤", 1, false, null);
         try {
             Elements results = doc.getElementsByClass("result");
             Elements resultContent = results.get(0).getElementsByClass("res-list");//获取每个条目

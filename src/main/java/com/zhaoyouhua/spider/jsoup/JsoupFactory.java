@@ -65,10 +65,12 @@ public class JsoupFactory {
             site = createBaiDuMobileUrl(keyword, pageNum);
             userAgent = uaMobile[random.nextInt(uaMobile.length)];
             log.info("UserAgent:" + userAgent);
+            headers.put("UserAgent",userAgent);
         } else {
             site = createBaiDuPcUrl(keyword, pageNum);
             userAgent = uaPc[random.nextInt(uaPc.length)];
             log.info("UserAgent:" + userAgent);
+            headers.put("UserAgent",userAgent);
             headers.put("Host", "www.baidu.com");
             headers.put("Referer", "https://www.baidu.com/");
 
@@ -84,6 +86,7 @@ public class JsoupFactory {
         if (headers == null) {
             headers = new HashMap<>();
         }
+        headers.put("UserAgent",userAgent);
         headers.put("Host", "www.sogou.com");
         headers.put("Referer", "https://www.sogou.com/");
         return getDoc(site, userAgent, isProxy, headers);
@@ -96,6 +99,7 @@ public class JsoupFactory {
         if (headers == null) {
             headers = new HashMap<>();
         }
+        headers.put("UserAgent",userAgent);
         headers.put("Host", "www.so.com");
         headers.put("Referer", "https://www.so.com/");
         return getDoc(site, userAgent, isProxy, headers);
@@ -111,6 +115,7 @@ public class JsoupFactory {
                         .ignoreContentType(true)
                         .timeout(1000 * 30).userAgent(userAgent);
                 if (headers != null) {
+                    headers.put("Connection","keep-alive");
                     connection.headers(headers);
                 }
                 if (isProxy) {

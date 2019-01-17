@@ -7,6 +7,7 @@ import com.zhaoyouhua.spider.model.QueryItem;
 import com.zhaoyouhua.spider.model.ResultRank;
 import com.zhaoyouhua.spider.model.ro.SpiderInput;
 import com.zhaoyouhua.spider.parse.DocParser2;
+import com.zhaoyouhua.spider.selenium.SeleniumFactory;
 import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Component;
 
@@ -34,6 +35,7 @@ public class ParseFactory {
                 case 1:
                     Document document = JsoupFactory.getBaiDuCrawler(resultRank.getQueryItem().getKeyword(), 1, false, false, null);
                     DocParser2.parseBaiDu(document, 1, resultRank);
+                   // SeleniumFactory.getBaiduDoc(resultRank.getQueryItem().getKeyword(),resultRank,true);
                     break;
                 case 2:
                     Document document2 = JsoupFactory.getBaiDuCrawler(resultRank.getQueryItem().getKeyword(), 1, true, false, null);
@@ -51,6 +53,9 @@ public class ParseFactory {
 
 
         } else {
+//            if (engineType == 1) {
+//                SeleniumFactory.getBaiduDoc(resultRank.getQueryItem().getKeyword(),resultRank,false);
+//            }
             int pageNum = 1;
             do {
                 switch (engineType) {
