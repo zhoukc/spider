@@ -65,12 +65,16 @@ public class JsoupFactory {
             site = createBaiDuMobileUrl(keyword, pageNum);
             userAgent = uaMobile[random.nextInt(uaMobile.length)];
             log.info("UserAgent:" + userAgent);
-            headers.put("UserAgent",userAgent);
+            headers.put("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+            headers.put("Accept-Encoding","gzip, deflate");
+            headers.put("Accept-Language","zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2");
         } else {
             site = createBaiDuPcUrl(keyword, pageNum);
             userAgent = uaPc[random.nextInt(uaPc.length)];
             log.info("UserAgent:" + userAgent);
-            headers.put("UserAgent",userAgent);
+            headers.put("Accept" ,"*/*");
+            headers.put("Accept-Encoding","gzip, deflate");
+            headers.put("Accept-Language","zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2");
             headers.put("Host", "www.baidu.com");
             headers.put("Referer", "https://www.baidu.com/");
 
@@ -86,7 +90,9 @@ public class JsoupFactory {
         if (headers == null) {
             headers = new HashMap<>();
         }
-        headers.put("UserAgent",userAgent);
+        headers.put("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+        headers.put("Accept-Encoding","gzip, deflate");
+        headers.put("Accept-Language","zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2");
         headers.put("Host", "www.sogou.com");
         headers.put("Referer", "https://www.sogou.com/");
         return getDoc(site, userAgent, isProxy, headers);
@@ -99,7 +105,9 @@ public class JsoupFactory {
         if (headers == null) {
             headers = new HashMap<>();
         }
-        headers.put("UserAgent",userAgent);
+        headers.put("Accept" ,"*/*");
+        headers.put("Accept-Encoding","gzip, deflate");
+        headers.put("Accept-Language","zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2");
         headers.put("Host", "www.so.com");
         headers.put("Referer", "https://www.so.com/");
         return getDoc(site, userAgent, isProxy, headers);
@@ -113,8 +121,11 @@ public class JsoupFactory {
                 Connection connection = Jsoup.connect(site)
                         .ignoreHttpErrors(true)
                         .ignoreContentType(true)
+                        .followRedirects(true)
                         .timeout(1000 * 30).userAgent(userAgent);
                 if (headers != null) {
+                    headers.put("Upgrade-Insecure-Requests","1");
+                    headers.put("Cache-Control","no-cache");
                     headers.put("Connection","keep-alive");
                     connection.headers(headers);
                 }
