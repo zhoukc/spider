@@ -30,6 +30,7 @@ public class UrlUtil {
 
     }
 
+
     public static String getDomainNamePri(String url) throws URISyntaxException {
         url = url.trim();
         if (!url.toLowerCase().startsWith("http")) {

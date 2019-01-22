@@ -3,6 +3,7 @@ package com.zhaoyouhua.spider;
 import com.zhaoyouhua.spider.jobs.OffLineCrawlJob;
 import com.zhaoyouhua.spider.jobs.OnLineCrawlJob;
 import com.zhaoyouhua.spider.jsoup.JsoupFactory;
+import com.zhaoyouhua.spider.mail.JavaMailService;
 import com.zhaoyouhua.spider.parse.DocParser2;
 import com.zhaoyouhua.spider.util.UrlUtil;
 import org.jsoup.nodes.Document;
@@ -20,7 +21,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class SpiderApplicationTests {
 
-//    @Autowired
+    //    @Autowired
 //    private OnLineCrawlJob onLineCrawlJob;
 //    @Autowired
 //    private OffLineCrawlJob offLineCrawlJob;
@@ -35,12 +36,27 @@ public class SpiderApplicationTests {
 //    public void  offLineCrawlJobTest()throws  Exception{
 //         offLineCrawlJob.getCrawlData();
 //    }
+    @Autowired
+    private JavaMailService javaMailService;
+
+    @Test
+    public void MailTest() throws Exception {
+        String receiver[]={"zhengyh@newmind.vip","17195877391@163.com"};
+        StringBuffer buffer=new StringBuffer();
+        buffer.append("今日一级市场爬取关键词数量为：");
+        buffer.append("\r\n 昨日爬取关键词数量为：");
+        buffer.append("\n今日二级级市场爬取关键词数量为：");
+        buffer.append("\r\n 昨日爬取关键词数量为：");
+
+        javaMailService.sendGroupMail("zhoukc@newmind.vip","爬虫爬取结果",buffer.toString(),receiver);
+
+    }
 
 
     @Test
     public void BaiDUTest() throws Exception {
-         //西安蟑螂药
-        Document doc = JsoupFactory.getBaiDuCrawler("家庭有蟑螂怎么办", 1, false, false, null);
+        //西安蟑螂药
+        Document doc = JsoupFactory.getBaiDuCrawler("激光打标机维修", 1, false, false, null);
 
         try {
             Element results = doc.getElementById("content_left");
@@ -49,7 +65,7 @@ public class SpiderApplicationTests {
             for (int i = 0; i < resultContent.size(); i++) {
                 try {
                     Element element = resultContent.get(i);
-                  //  Elements f13 = element.getElementsByClass("f13");
+                    //  Elements f13 = element.getElementsByClass("f13");
                     String site = element.getElementsByClass("c-showurl").get(0).ownText();
                     String domainName = UrlUtil.getDomainName(site);
                     System.out.println(domainName);
@@ -78,7 +94,7 @@ public class SpiderApplicationTests {
     @Test
     public void BaiDUMobileTest() throws Exception {
 
-        Document doc = JsoupFactory.getBaiDuCrawler("压力匹配器", 1, true, false, null);
+        Document doc = JsoupFactory.getBaiDuCrawler("张家口楼盘", 1, true, false, null);
 
         try {
             Element results = doc.getElementById("results");

@@ -59,16 +59,16 @@ public class QuartzSchedule {
     }
 
 
-    @Bean
-    public JobDetail crawlingResultJobDetail() {
-        return JobBuilder.newJob(CrawlingResultJob.class).withIdentity("crawlingResultJobDetail", "crawlingResult").storeDurably().build();
-    }
-
-    @Bean
-    public Trigger crawlingResultTrigger() {
-        CronScheduleBuilder cronSchedule = CronScheduleBuilder.cronSchedule("0 30 18 * * ?"); //每天下午18点30执行一次发送邮件
-        return TriggerBuilder.newTrigger().forJob(crawlingResultJobDetail()).withIdentity("crawlingResultTrigger", "crawlingResult").withSchedule(cronSchedule).build();
-    }
+//    @Bean
+//    public JobDetail crawlingResultJobDetail() {
+//        return JobBuilder.newJob(CrawlingResultJob.class).withIdentity("crawlingResultJobDetail", "crawlingResult").storeDurably().build();
+//    }
+//
+//    @Bean
+//    public Trigger crawlingResultTrigger() {
+//        CronScheduleBuilder cronSchedule = CronScheduleBuilder.cronSchedule("0 30 18 * * ?"); //每天下午18点30执行一次发送邮件
+//        return TriggerBuilder.newTrigger().forJob(crawlingResultJobDetail()).withIdentity("crawlingResultTrigger", "crawlingResult").withSchedule(cronSchedule).build();
+//    }
 
 
 }

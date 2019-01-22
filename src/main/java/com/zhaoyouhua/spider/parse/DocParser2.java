@@ -1,6 +1,7 @@
 package com.zhaoyouhua.spider.parse;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.zhaoyouhua.spider.model.ResultRank;
 import com.zhaoyouhua.spider.util.UrlUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +29,7 @@ public class DocParser2 {
                         Elements a = element.getElementsByClass("c-showurl");
                         String site = a.get(0).ownText();
                         if (judgeRank(pageNum, resultRank, (position + 1), element, site)) break;
-                    } catch (IndexOutOfBoundsException e) {
+                    } catch (Exception e) {
                         log.error("百度PC-没有条目");
                     }
                 }
@@ -45,22 +46,25 @@ public class DocParser2 {
     private static void parseBaiDuMobile(Document doc, int pageNum, ResultRank resultRank) {
         try {
             Element results = doc.getElementById("results");
-            Elements resultContent = results.getElementsByClass("c-result-content");//获取每个条目
+            Elements resultContent = results.getElementsByClass("c-result");//获取每个条目
 
             for (int i = 0; i < resultContent.size(); i++) {
 
                 try {
                     Element element = resultContent.get(i);
-                    String site = element.getElementsByClass("c-footer-showurl").get(0).ownText();
+                    String data_log = element.attr("data-log");
+                    log.info("data_log:" + data_log);
+                    JSONObject jsStr = JSONObject.parseObject(data_log);
+                    String site = jsStr.getString("mu");
                     String domainName = UrlUtil.getDomainName(site);
                     if (UrlUtil.getDomainName(resultRank.getQueryItem().getWebsite()).equalsIgnoreCase(domainName)) {
-                        log.info(resultRank.getQueryItem().getKeyword() + ";第" + pageNum + "页,排名第" + i + ";URL:" + domainName);
+                        log.info(resultRank.getQueryItem().getKeyword() + ";第" + pageNum + "页,排名第" + jsStr.getString("order") + ";URL:" + domainName);
                         resultRank.setPageNum(pageNum);
-                        resultRank.setPosition((i + 1));
-                        saveSnapshot(element, (i + 1), site, resultRank);
+                        resultRank.setPosition(Integer.parseInt(jsStr.getString("order")));
+                        saveSnapshot(element, pageNum, site, resultRank);
                         break;
                     }
-                } catch (IndexOutOfBoundsException e) {
+                } catch (Exception e) {
                     log.error("百度移动-没有条目");
                 }
 
@@ -83,7 +87,7 @@ public class DocParser2 {
                     Elements fb = element.getElementsByClass("fb");
                     String site = fb.get(0).child(0).ownText();
                     if (judgeRank(pageNum, resultRank, (i + 1), element, site)) break;
-                } catch (IndexOutOfBoundsException e) {
+                } catch (Exception e) {
                     log.error("搜狗PC-没有条目");
                 }
             }
@@ -118,7 +122,7 @@ public class DocParser2 {
                     Elements li = element.getElementsByClass("res-linkinfo");
                     String site = li.get(0).child(0).ownText();
                     if (judgeRank(pageNum, resultRank, (pos + 1), element, site)) break;
-                } catch (IndexOutOfBoundsException e) {
+                } catch (Exception e) {
                     log.error("360PC-没有条目");
                 }
             }
@@ -129,7 +133,7 @@ public class DocParser2 {
     }
 
 
-    private static void saveSnapshot(Element result, final int pageNum, final String site, ResultRank resultRank) {
+    public static void saveSnapshot(Element result, final int pageNum, final String site, ResultRank resultRank) {
         StringBuffer sb = new StringBuffer();
         sb.append("----快照摘要----" + "\n");
         sb.append("搜索引擎=" + resultRank.getQueryItem().getSearchEngine() + "\n");
