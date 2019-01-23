@@ -24,6 +24,7 @@ public class CrawlingResultJob extends QuartzJobBean {
 
     @Override
     protected void executeInternal(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+        log.info("执行发送邮件的定时任务");
         handle();
     }
 

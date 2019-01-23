@@ -1,11 +1,13 @@
 package com.zhaoyouhua.spider;
 
+import com.alibaba.fastjson.JSONObject;
 import com.zhaoyouhua.spider.jobs.OffLineCrawlJob;
 import com.zhaoyouhua.spider.jobs.OnLineCrawlJob;
 import com.zhaoyouhua.spider.jsoup.JsoupFactory;
 import com.zhaoyouhua.spider.mail.JavaMailService;
 import com.zhaoyouhua.spider.parse.DocParser2;
 import com.zhaoyouhua.spider.util.UrlUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -19,6 +21,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 //@ActiveProfiles("prod")
 @SpringBootTest
+@Slf4j
 public class SpiderApplicationTests {
 
     //    @Autowired
@@ -98,32 +101,34 @@ public class SpiderApplicationTests {
 
         try {
             Element results = doc.getElementById("results");
-            Elements resultContent = results.getElementsByClass("c-result-content");//获取每个条目
-
+            Elements resultContent = results.getElementsByClass("c-result");//获取每个条目 c-result
             for (int i = 0; i < resultContent.size(); i++) {
+
                 try {
                     Element element = resultContent.get(i);
-                    String site = element.getElementsByClass("c-footer-showurl").get(0).ownText();
+                    String data_log = element.attr("data-log");
+                    log.info("data_log:" + data_log);
+                    JSONObject jsStr = JSONObject.parseObject(data_log);
+
+                    String site = jsStr.getString("mu");
                     String domainName = UrlUtil.getDomainName(site);
-                    System.out.println(domainName);
-//                if (UrlUtil.getDomainName(resultRank.getQueryItem().getWebsite()).equalsIgnoreCase(domainName)) {
-////                    log.info(resultRank.getQueryItem().getKeyword() + ";第" + pageNum + "页,排名第" + i + ";URL:" + domainName);
-////                    resultRank.setPageNum(pageNum);
-////                    resultRank.setPosition((i + 1));
-////                    saveSnapshot(element, (i + 1), site, resultRank);
-////                    break;
-////                }
-                } catch (NullPointerException e) {
-                    System.out.println(e);
-                } catch (IndexOutOfBoundsException e) {
-                    System.out.println(e);
+                    System.out.println(domainName + "第" + jsStr.getString("order") + "个位置");
+//                    if ("http://mm.zjk169.net/".equalsIgnoreCase(site)) {
+//                        log.info(resultRank.getQueryItem().getKeyword() + ";第" + 1 + "页,排名第" + jsStr.getString("order") + ";URL:" + domainName);
+//                        resultRank.setPageNum(1);
+//                        resultRank.setPosition(Integer.parseInt(jsStr.getString("order")));
+//                        DocParser2.saveSnapshot(element, (i + 1), site, resultRank);
+//                        break;
+//                    }
+                } catch (Exception e) {
+                    log.error("百度移动-没有条目");
                 }
 
             }
 
-        } catch (Exception e) {
-            System.out.println("没有链接");
 
+        } catch (Exception e) {
+            log.error("没有链接", e);
         }
     }
 

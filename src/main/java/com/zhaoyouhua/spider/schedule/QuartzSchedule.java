@@ -18,7 +18,7 @@ public class QuartzSchedule {
 
     @Bean
     public Trigger onLineCrawlerTrigger() {
-        CronScheduleBuilder cronSchedule = CronScheduleBuilder.cronSchedule("0 0 10 * * ?"); //每天早上10点执行一次
+        CronScheduleBuilder cronSchedule = CronScheduleBuilder.cronSchedule("0 0 8 * * ?"); //每天早上8点执行一次
         return TriggerBuilder.newTrigger().forJob(onLineCrawlerJobDetail()).withIdentity("onLineCrawlerTrigger", "onLineCrawler").withSchedule(cronSchedule).build();
     }
 
@@ -30,7 +30,7 @@ public class QuartzSchedule {
 
     @Bean
     public Trigger offLineCrawlerTrigger() {
-        CronScheduleBuilder cronSchedule = CronScheduleBuilder.cronSchedule("0 0 10 * * ?"); //每天早上10点执行一次
+        CronScheduleBuilder cronSchedule = CronScheduleBuilder.cronSchedule("0 0 8 * * ?"); //每天早上8点执行一次
         return TriggerBuilder.newTrigger().forJob(offLineCrawlerJobDetail()).withIdentity("offLineCrawlerTrigger", "offLineCrawler").withSchedule(cronSchedule).build();
     }
 
@@ -42,7 +42,7 @@ public class QuartzSchedule {
 
     @Bean
     public Trigger onLineCrawlerTrigger2() {
-        CronScheduleBuilder cronSchedule = CronScheduleBuilder.cronSchedule("0 0 18 * * ?"); //每天下午18点执行一次
+        CronScheduleBuilder cronSchedule = CronScheduleBuilder.cronSchedule("0 0 17 * * ?"); //每天下午17点执行一次
         return TriggerBuilder.newTrigger().forJob(onLineCrawlerJobDetail2()).withIdentity("onLineCrawlerTrigger2", "onLineCrawler").withSchedule(cronSchedule).build();
     }
 
@@ -54,21 +54,21 @@ public class QuartzSchedule {
 
     @Bean
     public Trigger offLineCrawlerTrigger2() {
-        CronScheduleBuilder cronSchedule = CronScheduleBuilder.cronSchedule("0 0 18 * * ?"); //每天下午18点执行一次
+        CronScheduleBuilder cronSchedule = CronScheduleBuilder.cronSchedule("0 0 17 * * ?"); //每天下午17点执行一次
         return TriggerBuilder.newTrigger().forJob(offLineCrawlerJobDetail2()).withIdentity("offLineCrawlerTrigger2", "offLineCrawler").withSchedule(cronSchedule).build();
     }
 
 
-//    @Bean
-//    public JobDetail crawlingResultJobDetail() {
-//        return JobBuilder.newJob(CrawlingResultJob.class).withIdentity("crawlingResultJobDetail", "crawlingResult").storeDurably().build();
-//    }
-//
-//    @Bean
-//    public Trigger crawlingResultTrigger() {
-//        CronScheduleBuilder cronSchedule = CronScheduleBuilder.cronSchedule("0 30 18 * * ?"); //每天下午18点30执行一次发送邮件
-//        return TriggerBuilder.newTrigger().forJob(crawlingResultJobDetail()).withIdentity("crawlingResultTrigger", "crawlingResult").withSchedule(cronSchedule).build();
-//    }
+    @Bean
+    public JobDetail crawlingResultJobDetail() {
+        return JobBuilder.newJob(CrawlingResultJob.class).withIdentity("crawlingResultJobDetail", "crawlingResult").storeDurably().build();
+    }
+
+    @Bean
+    public Trigger crawlingResultTrigger() {
+        CronScheduleBuilder cronSchedule = CronScheduleBuilder.cronSchedule("0 0 18 * * ?"); //每天下午18点执行一次发送邮件
+        return TriggerBuilder.newTrigger().forJob(crawlingResultJobDetail()).withIdentity("crawlingResultTrigger", "crawlingResult").withSchedule(cronSchedule).build();
+    }
 
 
 }
