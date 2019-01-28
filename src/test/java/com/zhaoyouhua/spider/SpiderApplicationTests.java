@@ -59,7 +59,7 @@ public class SpiderApplicationTests {
     @Test
     public void BaiDUTest() throws Exception {
         //西安蟑螂药
-        Document doc = JsoupFactory.getBaiDuCrawler("激光打标机维修", 1, false, false, null);
+        Document doc = JsoupFactory.getBaiDuCrawler("超纯水机", 2, false, false, null);
 
         try {
             Element results = doc.getElementById("content_left");
@@ -97,7 +97,7 @@ public class SpiderApplicationTests {
     @Test
     public void BaiDUMobileTest() throws Exception {
 
-        Document doc = JsoupFactory.getBaiDuCrawler("张家口楼盘", 1, true, false, null);
+        Document doc = JsoupFactory.getBaiDuCrawler("吊顶除湿机", 2, true, false, null);
 
         try {
             Element results = doc.getElementById("results");

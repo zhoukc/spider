@@ -41,11 +41,11 @@ public class CrawlingResultJob extends QuartzJobBean {
         int countOnlineTotal =reptilianRecordDao.countReptilianRecords(DateUtil.localDateTimeToDate(localDateTime));
 
 
-        String receiver[]={"gaoyb@newmind.vip","zhangw@newmind.vip,17195877391@163.com"};
+        String receiver[]={"gaoyb@newmind.vip","zhangw@newmind.vip","17195877391@163.com"};
         StringBuffer buffer=new StringBuffer();
         buffer.append("今日一级市场爬取关键词数量为："+countOnline);
         buffer.append("\r\n 昨日爬取关键词数量为："+(countOnlineTotal-countOnline));
-        buffer.append("今日二级级市场爬取关键词数量为："+countOffline);
+        buffer.append("\r\n今日二级级市场爬取关键词数量为："+countOffline);
         buffer.append("\r\n 昨日爬取关键词数量为："+(countOfflineTotal-countOffline));
 
         javaMailService.sendGroupMail("zhoukc@newmind.vip","爬虫爬取结果",buffer.toString(),receiver);
